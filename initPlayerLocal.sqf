@@ -1,28 +1,15 @@
-private _weapon = currentWeapon player;
-if (_weapon isEqualTo "" || _weapon isEqualTo (binocular player)) then {
-	player setCaptive true;
-};
+// add actions for briefing board slides
+execVM "configureBriefingBoard.sqf";
+// enable diary entries
+execVM "configureDiary.sqf";
 
-undercover_switch = {
-	params [
-		["_unit", player, [objNull]]
-		,["_weapon", currentWeapon player, [""]]
-	];
-	player sideChat "sussy gussy3";
-	if ( _weapon isEqualTo "") exitWith {
-		player sideChat "NO WEAPON";
-		if !(captive _unit) then {
-			hint "You are now undercover.";
-		};
-		player sideChat "SET UNDERCOVER";
-		_unit setCaptive true;
-	};
-	if (captive _unit) then {
-		player sideChat "UNSET UNDERCOVER1";
-		hint "You are no longer undercover.";
-	};
-	player sideChat "UNSET UNDERCOVER2";
-	_unit setCaptive false;
-};
+// configure spectator action at main base
+spectator_screen addAction ["<t color='#00FF00'>Spectator</t>", HNDM_fnc_spectate, [], 1, true, true, "", "_this distance _target < 3"];
+spectator_table addAction ["<t color='#00FFFF'>Spectator</t>", HNDM_fnc_spectate, [], 1, true, true, "", "_this distance _target < 3"];
 
-undercover_evh = ["weapon", {[_this select 0, _this select 1] call undercover_switch}] call CBA_fnc_addPlayerEventHandler;
+spectator_screen addAction ["<t color='#FFFF00'>MERMANS CLUNGE</t>", {systemChat "clunge not found";}, [], 1, true, true, "", "_this distance _target < 3"];
+
+// configure respawn action for ammo boxes
+
+// enable diary entries
+execVM "configureZenModules.sqf";

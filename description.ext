@@ -1,0 +1,376 @@
+author			= "Houndeye";
+onLoadName		= "Operation Limp Bisquit";
+onLoadMission	= "Capture precious cargo from Tanoa officials.";
+loadScreen		= "images\logo.jpg";
+
+class Header
+{
+	gameType = "Coop";	// Game type
+	minPlayers =  1;	// minimum number of players the mission supports
+	maxPlayers = 16;	// maximum number of players the mission supports
+};
+
+class CfgRoles
+{
+	class HndmCellLeader
+	{
+		displayName = "Squad Commander";
+		icon = "a3\Ui_f\data\GUI\Cfg\RespawnRoles\assault_ca.paa";
+	};
+	class HndmCell2IC
+	{
+		displayName = "Senior Rifleman";
+		icon = "a3\Ui_f\data\GUI\Cfg\RespawnRoles\assault_ca.paa";
+	};
+	class HndmGunner
+	{
+		displayName = "Machine Gunner";
+		icon = "a3\Ui_f\data\GUI\Cfg\RespawnRoles\assault_ca.paa";
+	};
+	class HndmGrenadier
+	{
+		displayName = "Grenadier";
+		icon = "a3\Ui_f\data\GUI\Cfg\RespawnRoles\assault_ca.paa";
+	};
+	class HndmMedic
+	{
+		displayName = "Medic";
+		icon = "a3\Ui_f\data\GUI\Cfg\RespawnRoles\assault_ca.paa";
+	};
+	class HndmRifleman
+	{
+		displayName = "Rifleman";
+		icon = "a3\Ui_f\data\GUI\Cfg\RespawnRoles\assault_ca.paa";
+	};
+	class HndmInfiltrator
+	{
+		displayName = "Infiltrator";
+		icon = "a3\Ui_f\data\GUI\Cfg\RespawnRoles\assault_ca.paa";
+	};
+};
+
+class CfgRespawnInventory
+{
+	class Zeussy
+	{
+	displayName = "Zeus";
+	icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+	role = "Default";
+	show = "true";
+	uniformClass = "rhsgref_uniform_TLA_1";
+	backpack = "";
+	weapons[] = {"rhs_weap_tt33", "Binocular", "Throw", "Put"};
+	magazines[] = {"rhs_mag_762x25_8", "rhs_mag_762x25_8", "rhs_mag_762x25_8", "rhs_mag_rdg2_black", "rhs_mag_rdg2_black", "rhs_mag_762x25_8"};
+	items[] = {"FirstAidKit"};
+	linkedItems[] = {"rhs_vest_pistol_holster", "H_Beret_blk", "G_Squares", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+
+	class HNDM_LeaderAK
+	{
+		displayName = "AKMS (Red dot)";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "rhsgref_uniform_TLA_1";
+		backpack = "";
+		weapons[] = {"rhs_weap_akmn", "Binocular", "Throw", "Put"};
+		magazines[] = {"rhs_30Rnd_762x39mm_89", "rhs_mag_f1", "rhs_mag_f1", "rhs_mag_rdg2_white", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"V_TacVest_oli", "H_Bandanna_khk", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152", "rhs_acc_dtkakm", "rhs_acc_ekp1"};
+	};
+	class HNDM_LeaderVZ
+	{
+		displayName = "SA Vz.58 V (Red dot)";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "rhsgref_uniform_TLA_2";
+		backpack = "";
+		weapons[] = {"rhs_weap_savz58v_rail", "rhsusf_weap_m9", "Binocular", "Throw", "Put"};
+		magazines[] = {"rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_mag_f1", "rhs_mag_f1", "rhs_30Rnd_762x39mm_Savz58"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"V_TacVest_oli", "H_Bandanna_khk", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152", "rhsusf_acc_RX01"};
+	};
+	class HNDM_GrenadierM79
+	{
+		displayName = "M79 + Vz.61 Skorpion";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "rhsgref_uniform_olive";
+		backpack = "rhs_sidor";
+		weapons[] = {"rhs_weap_m79", "rhs_weap_savz61_folded", "Throw", "Put"};
+		magazines[] = {"rhs_mag_f1", "rhs_mag_f1", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M433_HEDP", "rhs_mag_M441_HE", "rhsgref_20rnd_765x17_vz61"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"v_tacvest_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+	class HNDM_GrenadierRPG_AK
+	{
+		displayName = "RPG-7 + AKMS";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "rhsgref_uniform_olive";
+		backpack = "rhs_rpg_empty";
+		weapons[] = {"rhs_weap_akms", "rhs_weap_rpg7", "rhs_weap_savz61_folded", "Throw", "Put"};
+		magazines[] = {"rhs_mag_f1", "rhs_mag_f1", "rhs_rpg7_OG7V_mag", "rhs_rpg7_OG7V_mag", "rhs_rpg7_OG7V_mag", "rhs_rpg7_OG7V_mag", "rhs_30Rnd_762x39mm_bakelite", "rhs_rpg7_OG7V_mag", "rhsgref_20rnd_765x17_vz61"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"v_tacvest_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152", "rhs_acc_dtkakm"};
+	};
+
+	class HNDM_GrenadierRPG_VZ
+	{
+		displayName = "RPG-7 + SA Vz.58 V";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "rhsgref_uniform_olive";
+		backpack = "rhs_rpg_empty";
+		weapons[] = {"rhs_weap_akms", "rhs_weap_rpg7", "rhs_weap_savz61_folded", "Throw", "Put"};
+		magazines[] = {"rhs_mag_f1", "rhs_mag_f1", "rhs_rpg7_OG7V_mag", "rhs_rpg7_OG7V_mag", "rhs_rpg7_OG7V_mag", "rhs_rpg7_OG7V_mag", "rhs_30Rnd_762x39mm_bakelite", "rhs_rpg7_OG7V_mag", "rhsgref_20rnd_765x17_vz61"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"v_tacvest_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152", "rhs_acc_dtkakm"};
+	};
+
+	class HNDM_GunnerPKM
+	{
+		displayName = "PKM";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "U_I_C_Soldier_Para_1_F";
+		backpack = "";
+		weapons[] = {"rhs_weap_pkm", "rhs_weap_savz61_folded", "Throw", "Put"};
+		magazines[] = {"rhs_mag_f1", "rhs_mag_f1", "rhs_100Rnd_762x54mmR", "rhsgref_20rnd_765x17_vz61"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"V_TacVest_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+
+	class HNDM_GunnerMAG
+	{
+		displayName = "FN MAG";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "U_I_C_Soldier_Para_1_F";
+		backpack = "rhs_sidor";
+		weapons[] = {"rhs_weap_fnmag", "Throw", "Put"};
+		magazines[] = {"rhs_mag_f1", "rhs_mag_f1", "rhsusf_100Rnd_762x51", "rhsusf_100Rnd_762x51", "rhsusf_100Rnd_762x51", "rhsusf_100Rnd_762x51", "rhsusf_100Rnd_762x51", "rhsusf_100Rnd_762x51"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"V_TacVest_oli", "H_Booniehat_khk", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+
+	class HNDM_MarksmanM14
+	{
+		displayName = "M14 (ACOG)";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "rhsgref_uniform_olive";
+		backpack = "";
+		weapons[] = {"rhs_weap_m14_rail", "Throw", "Put"};
+		magazines[] = {"rhs_mag_f1", "rhs_mag_f1", "rhsusf_20Rnd_762x51_m80_Mag", "rhsusf_20Rnd_762x51_m80_Mag", "rhsusf_20Rnd_762x51_m80_Mag", "rhsusf_20Rnd_762x51_m80_Mag", "rhsusf_20Rnd_762x51_m80_Mag"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"V_TacVest_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152", "rhsusf_acc_ACOG2"};
+	};
+	class HNDM_MarksmanFAL
+	{
+		displayName = "FN FAL (SUIT)";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "rhsgref_uniform_olive";
+		backpack = "";
+		weapons[] = {"rhs_weap_l1a1_wood", "Throw", "Put"};
+		magazines[] = {"rhs_mag_f1", "rhs_mag_f1", "rhs_mag_20Rnd_762x51_m80_fnfal", "rhs_mag_20Rnd_762x51_m80_fnfal", "rhs_mag_20Rnd_762x51_m80_fnfal", "rhs_mag_20Rnd_762x51_m80_fnfal", "rhs_mag_20Rnd_762x51_m80_fnfal"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"V_TacVest_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152", "rhsgref_acc_falMuzzle_l1a1", "rhsgref_acc_l1a1_l2a2"};
+	};
+
+	class HNDM_MedicAK
+	{
+		displayName = "AKMS";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "U_I_C_Soldier_Para_4_F";
+		backpack = "rhs_sidor";
+		weapons[] = {"rhs_weap_akms", "Throw", "Put"};
+		magazines[] = {"rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_mag_f1", "rhs_mag_f1", "rhs_30Rnd_762x39mm_89"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"v_tacvest_oli", "H_Cap_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+	class HNDM_MedicVZ
+	{
+		displayName = "SA Vz.58 V";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "U_I_C_Soldier_Para_4_F";
+		backpack = "rhs_sidor";
+		weapons[] = {"rhs_weap_savz58p", "Throw", "Put"};
+		magazines[] = {"rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_mag_f1", "rhs_mag_f1", "rhs_30Rnd_762x39mm_Savz58"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"v_tacvest_oli", "H_Cap_oli", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+	class HNDM_GuerrillaAK
+	{
+		displayName = "AKMS";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "U_I_C_Soldier_Para_1_F";
+		backpack = "";
+		weapons[] = {"rhs_weap_akm", "Throw", "Put"};
+		magazines[] = {"rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_30Rnd_762x39mm_89", "rhs_mag_f1", "rhs_mag_f1", "rhs_30Rnd_762x39mm_89"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"v_tacvest_oli", "H_Booniehat_khk", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152", "rhs_acc_dtkakm"};
+	};
+	class HNDM_GuerrillaVZ
+	{
+		displayName = "SA Vz.58 V";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "U_I_C_Soldier_Para_2_F";
+		backpack = "";
+		weapons[] = {"rhs_weap_savz58p", "Throw", "Put"};
+		magazines[] = {"rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_30Rnd_762x39mm_Savz58", "rhs_mag_f1", "rhs_mag_f1", "rhs_30Rnd_762x39mm_Savz58"};
+		items[] = {"FirstAidKit"};
+		linkedItems[] = {"v_tacvest_oli", "H_Booniehat_khk", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+
+	class HNDM_TLA_UC_1
+	{
+		displayName = "Vz. 61 Skorpion";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "LOP_U_PMC_red_hi";
+		backpack = "B_CivilianBackpack_01_Everyday_Astra_F";
+		weapons[] = {"rhs_weap_savz61", "Throw", "Put"};
+		magazines[] = {"rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61"};
+		items[] = {"FirstAidKit", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_personalAidKit", "ACE_salineIV_500", "ACE_salineIV_500", "ACE_splint", "ACE_splint", "ACE_tourniquet", "ACE_tourniquet", "ACE_morphine", "ACE_morphine", "ACE_epinephrine", "ACE_epinephrine"};
+		linkedItems[] = {, "G_Shades_Blue", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+	class HNDM_TLA_UC_2
+	{
+		displayName = "Vz. 61 Skorpion";
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+		role = "Default";
+		show = "true";
+		uniformClass = "LOP_U_PMC_orng_plaid";
+		backpack = "B_CivilianBackpack_01_Everyday_Black_F";
+		weapons[] = {"rhs_weap_savz61", "Throw", "Put"};
+		magazines[] = {"rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61"};
+		items[] = {"FirstAidKit", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_personalAidKit", "ACE_salineIV_500", "ACE_salineIV_500", "ACE_splint", "ACE_splint", "ACE_tourniquet", "ACE_tourniquet", "ACE_morphine", "ACE_morphine", "ACE_epinephrine", "ACE_epinephrine"};
+		linkedItems[] = {, "G_Shades_Blue", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+	};
+};
+
+class CfgFunctions
+{
+	class HNDM
+	{
+		class Mission
+		{
+			class spectate {
+				file = functions\fn_spectate.sqf;
+			};
+			class stopSpectate {
+				file = functions\fn_stopSpectate.sqf;
+			};
+			class deployReinforcements {
+				file = functions\fn_deployReinforcements.sqf;
+			};
+			class undercoverHandleArea {
+				file = functions\fn_undercoverHandleArea.sqf;
+			};
+			class undercoverInit {
+				file = functions\fn_undercoverInit.sqf;
+			};
+			class undercoverOff {
+				file = functions\fn_undercoverOff.sqf;
+			};
+			class undercoverOn {
+				file = functions\fn_undercoverOn.sqf;
+			};
+			class undercoverRemove {
+				file = functions\fn_undercoverRemove.sqf;
+			};
+		};
+	};
+};
+
+class RscTitles
+{
+	class UndercoverOff
+	{    
+		idd = -1;
+		duration = 3600;
+		class controls
+		{
+			class UndercoverOffControl
+			{    
+				idc = -1;
+				type = 0;
+				style = 0;
+				x = safezoneX; 
+				y = safezoneY + safezoneY / 3;
+				w = safezoneW / 2;
+				h = safezoneH / 6;
+				font = "EtelkaNarrowMediumPro";
+				sizeEx = 0.1;
+				colorBackground[] = {1,1,1,0.4};
+				colorText[] = {1,0,0,0.8};
+				text = "Hostile";
+			};
+		};	
+	};
+	class UndercoverOn
+	{    
+		idd = -1;
+		duration = 3600;
+		class controls
+		{
+			class UndercoverOnControl
+			{    
+				idc = -1;
+				type = 0;
+				style = 0;
+				x = safezoneX; 
+				y = safezoneY + safezoneY / 3;
+				w = safezoneW / 2;
+				h = safezoneH / 6;
+				font = "EtelkaNarrowMediumPro";
+				sizeEx = 0.1;
+				colorBackground[] = {1,1,1,0.4};
+				colorText[] = {0,1,0,0.8};
+				text = "Civilian";
+			};  
+		};	
+	};
+	class UndercoverRemove
+	{    
+		idd = -1;
+		duration = 5;
+		class controls
+		{
+			class UndercoverRemoveControl
+			{    
+				idc = -1;
+				type = 0;
+				style = 0;
+				x = safezoneX; 
+				y = safezoneY + safezoneY / 3;
+				w = safezoneW / 2;
+				h = safezoneH / 6;
+				font = "EtelkaNarrowMediumPro";
+				sizeEx = 0.1;
+				colorBackground[] = {1,1,1,0.4};
+				colorText[] = {1,0,0,0.8};
+				text = "You are no longer undercover!";
+			};  
+		};	
+	};
+};
