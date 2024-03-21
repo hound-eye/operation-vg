@@ -274,6 +274,9 @@ class CfgFunctions
 	{
 		class Mission
 		{
+			class enableDeployment {
+				file = functions\fn_enableDeployment.sqf;
+			};
 			class spectate {
 				file = functions\fn_spectate.sqf;
 			};
@@ -283,17 +286,32 @@ class CfgFunctions
 			class deployReinforcements {
 				file = functions\fn_deployReinforcements.sqf;
 			};
+			class undercoverEvaluateArmed {
+				file = functions\fn_undercoverEvaluateArmed.sqf;
+			};
 			class undercoverHandleArea {
 				file = functions\fn_undercoverHandleArea.sqf;
+			};
+			class undercoverHandleLoadoutChange {
+				file = functions\fn_undercoverHandleLoadoutChange.sqf;
+			};
+			class undercoverHandleVehicleChange {
+				file = functions\fn_undercoverHandleVehicleChange.sqf;
+			};
+			class undercoverHandleWeaponChange {
+				file = functions\fn_undercoverHandleWeaponChange.sqf;
 			};
 			class undercoverInit {
 				file = functions\fn_undercoverInit.sqf;
 			};
-			class undercoverOff {
-				file = functions\fn_undercoverOff.sqf;
+			class undercoverArmed {
+				file = functions\fn_undercoverArmed.sqf;
 			};
-			class undercoverOn {
-				file = functions\fn_undercoverOn.sqf;
+			class undercoverUnarmed {
+				file = functions\fn_undercoverUnarmed.sqf;
+			};
+			class undercoverSuspect {
+				file = functions\fn_undercoverSuspect.sqf;
 			};
 			class undercoverRemove {
 				file = functions\fn_undercoverRemove.sqf;
@@ -302,55 +320,130 @@ class CfgFunctions
 	};
 };
 
+class CfgNotifications
+{
+	class EnabledDeployment
+	{
+		title = "New available deployment point";				
+		iconPicture = "\A3\ui_f\data\map\markers\military\start_CA.paa";
+		iconText = "";	
+		description = "%1";
+		color[] = {1,1,1,1};
+		duration = 5;
+		priority = 0;
+		difficulty[] = {};
+	};
+	class DisabledDeployment
+	{
+		title = "Deployment point unavailable";				
+		iconPicture = "\A3\ui_f\data\map\markers\military\objective_CA.paa";
+		iconText = "";	
+		description = "%1";
+		color[] = {1,1,1,1};
+		duration = 5;
+		priority = 0;
+		difficulty[] = {};
+	};
+};
+
 class RscTitles
 {
-	class UndercoverOff
+	class ArmedMessage
 	{    
 		idd = -1;
 		duration = 3600;
 		class controls
 		{
-			class UndercoverOffControl
+			class ArmedMessageControl
 			{    
 				idc = -1;
 				type = 0;
 				style = 0;
-				x = safezoneX; 
-				y = safezoneY + safezoneY / 3;
-				w = safezoneW / 2;
-				h = safezoneH / 6;
+				x = safezoneX + 0.05 * safeZoneW;
+				y = safezoneY + 0.3 * safeZoneH;
+				w = 0.5 * safezoneW;
+				h = 0.5 * safezoneH;
 				font = "EtelkaNarrowMediumPro";
 				sizeEx = 0.1;
-				colorBackground[] = {1,1,1,0.4};
+				colorBackground[] = {1,1,1,0};
 				colorText[] = {1,0,0,0.8};
 				text = "Hostile";
 			};
 		};	
 	};
-	class UndercoverOn
+	class UnarmedMessage
 	{    
+
 		idd = -1;
 		duration = 3600;
 		class controls
 		{
-			class UndercoverOnControl
+			class UnarmedMessageControl
 			{    
 				idc = -1;
 				type = 0;
 				style = 0;
-				x = safezoneX; 
-				y = safezoneY + safezoneY / 3;
-				w = safezoneW / 2;
-				h = safezoneH / 6;
+				x = safezoneX + 0.05 * safeZoneW;
+				y = safezoneY + 0.3 * safeZoneH;
+				w = 0.5 * safezoneW;
+				h = 0.5 * safezoneH;
 				font = "EtelkaNarrowMediumPro";
 				sizeEx = 0.1;
-				colorBackground[] = {1,1,1,0.4};
+				colorBackground[] = {1,1,1,0};
 				colorText[] = {0,1,0,0.8};
 				text = "Civilian";
 			};  
 		};	
 	};
-	class UndercoverRemove
+	class SuspectMessage
+	{    
+
+		idd = -1;
+		duration = 3600;
+		class controls
+		{
+			class SuspectMessageControl
+			{    
+				idc = -1;
+				type = 0;
+				style = 0;
+				x = safezoneX + 0.05 * safeZoneW;
+				y = safezoneY + 0.3 * safeZoneH;
+				w = 0.5 * safezoneW;
+				h = 0.5 * safezoneH;
+				font = "EtelkaNarrowMediumPro";
+				sizeEx = 0.1;
+				colorBackground[] = {1,1,1,0};
+				colorText[] = {1,0,0,0.8};
+				text = "Restricted Area";
+			};  
+		};	
+	};
+	class RestrictedAreaMessage
+	{    
+
+		idd = -1;
+		duration = 1;
+		class controls
+		{
+			class UnarmedMessageControl
+			{    
+				idc = -1;
+				type = 0;
+				style = 0;
+				x = safezoneX + 0.05 * safeZoneW;
+				y = safezoneY + 0.3 * safeZoneH;
+				w = 0.5 * safezoneW;
+				h = 0.5 * safezoneH;
+				font = "EtelkaNarrowMediumPro";
+				sizeEx = 0.1;
+				colorBackground[] = {1,1,1,0};
+				colorText[] = {0,1,0,0.8};
+				text = "Civilian";
+			};  
+		};	
+	};
+	class UndercoverRemoveMessage
 	{    
 		idd = -1;
 		duration = 5;
@@ -361,13 +454,13 @@ class RscTitles
 				idc = -1;
 				type = 0;
 				style = 0;
-				x = safezoneX; 
-				y = safezoneY + safezoneY / 3;
-				w = safezoneW / 2;
-				h = safezoneH / 6;
+				x = safezoneX + 0.05 * safeZoneW;
+				y = safezoneY + 0.3 * safeZoneH;
+				w = 0.5 * safezoneW;
+				h = 0.5 * safezoneH;
 				font = "EtelkaNarrowMediumPro";
 				sizeEx = 0.1;
-				colorBackground[] = {1,1,1,0.4};
+				colorBackground[] = {1,1,1,0};
 				colorText[] = {1,0,0,0.8};
 				text = "You are no longer undercover!";
 			};  

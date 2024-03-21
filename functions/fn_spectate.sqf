@@ -9,7 +9,6 @@
 		[kill_obj_trigger] call HNDM_fnc_onObjectiveCompletion.
 */
 /* Private variables */
-systemChat "spectate";
 private ["_Key","_RscLayer", "_HintLayer"];
 /* Prevents unit moving */
 (_this select 1) enableSimulation false;
@@ -26,7 +25,7 @@ _RscLayer cutrsc ["RscSpectator","plain"];
 _HintLayer = "HNDM_hint" call bis_fnc_rscLayer;
 _HintLayer cutText ["left-right arrow keys to switch players, ESC to stop spectating", "PLAIN DOWN"];
 /* Exits spectator camera using the Ctrl + T key */
-BEARB_SpectatorKeyDown =
+HNDM_SpectatorKeyDown =
 {
    _Key = _this select 1;
    if ((_Key == 1)) then
@@ -37,5 +36,5 @@ BEARB_SpectatorKeyDown =
 /* Ensures the primary display is found */
 waitUntil {!isNull(findDisplay 46)};
 /* Adds event handlers to detect key press */
-BEARB_SpectatorEH = (findDisplay 46) displayAddEventHandler ["keyDown", "_this call BEARB_SpectatorKeyDown"];
+HNDM_SpectatorEH = (findDisplay 46) displayAddEventHandler ["keyDown", "_this call HNDM_SpectatorKeyDown"];
 true;

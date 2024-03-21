@@ -7,7 +7,7 @@
 	Returns:
 		BOOLEAN
 	Examples:
-		[unit] call HNDM_fnc_blowCover.
+		[unit] call HNDM_fnc_undercoverRemove
 */
 /* Private variables */
 
@@ -19,17 +19,12 @@
 /* Stops spectator script */
 params["_ucUnit"];
 //check if unit is already undercover
-HNDM_UC_enabled = missionNamespace getVariable ["HNDM_UC_enabled",false];
-if (!HNDM_UC_enabled) exitWith {
-	systemChat "### Unit is not undercover! ###"
-};
-
-systemChat "DEBUG UC Removed";
-if (captive _ucUnit) then {
-	_ucUnit setCaptive false;
-};
-	cutRsc ["UndercoverRemove","PLAIN"];
+//_ucUnit getVariable ["HNDM_UC_enabled",false];
+//systemChat "DEBUG UC Removed";
+_ucUnit setCaptive false;
+cutRsc ["UndercoverRemoveMessage","PLAIN"];
 ["weapon", HNDM_UC_EVH_weapon] call CBA_fnc_removePlayerEventHandler;
 ["loadout", HNDM_UC_EVH_loadout] call CBA_fnc_removePlayerEventHandler;
 ["vehicle", HNDM_UC_EVH_vehicle] call CBA_fnc_removePlayerEventHandler;
-HNDM_UC_enabled=nil;
+_ucUnit setVariable ["HNDM_UC_enabled",nil,false];
+true;

@@ -1,13 +1,12 @@
 /*
 	Author: Houndeye
 	Description:
-		Remove undercover mechanics from a unit
 	Parameter(s):
 		0: OBJECT - unit to disable undercover logic for
 	Returns:
 		BOOLEAN
 	Examples:
-		[unit] call HNDM_fnc_blowCover.
+		[unit] call HNDM_fnc_undercoverUnarmed
 */
 /* Private variables */
 
@@ -18,10 +17,8 @@
 
 /* Stops spectator script */
 params["_ucUnit"];
-systemChat "DEBUG UC OFF";
-if (captive _ucUnit) then {
-	cutRsc ["UndercoverOff","PLAIN"];
-};
+systemChat "DEBUG UC ON";
+cutRsc ["UnarmedMessage","PLAIN"];
 //and this switches him back to his regular self:
-_ucUnit setCaptive false;
+_ucUnit setCaptive true;
 true;

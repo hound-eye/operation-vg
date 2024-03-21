@@ -18,8 +18,8 @@ BIS_fnc_feedback_allowPP = true;
 ("BIS_fnc_respawnSpectator" call BIS_fnc_rscLayer) cutText ["", "PLAIN"];
 ("HNDM_hint" call BIS_fnc_rscLayer) cutText ["", "PLAIN"];
 /* Removes event handlers detecting key press */
-if (!isNil "BEARB_SpectatorEH") then {
-	(findDisplay 46) displayRemoveEventHandler ["KeyDown", BEARB_SpectatorEH];
+if (!isNil "HNDM_SpectatorEH") then {
+	(findDisplay 46) displayRemoveEventHandler ["KeyDown", HNDM_SpectatorEH];
 };
 /* Allows unit moving */
 player enableSimulation true;
