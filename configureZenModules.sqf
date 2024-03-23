@@ -9,7 +9,17 @@
 		} forEach allUnits;
 	}] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Health: Show blood values", {
+["A_Mission", "Unholster pistols for all AI", {
+		{
+			if (!isPlayer _x && {currentWeapon _x == handgunWeapon _x}) then {
+				_x action ['SwitchWeapon', _x, _x, 100];
+			};
+		} forEach allUnits;
+	}] call zen_custom_modules_fnc_register;
+
+
+["A_Mission", "Health: Display blood values", {
+	if (!isNil "ace_med_debug") exitWith { systemChat "health is already displayed" };
 	ace_med_debug = addMissionEventHandler ["Draw3D", {
 		{
 		_unit = _x;
@@ -35,8 +45,9 @@
 	}];
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Health: hide blood values", {
+["A_Mission", "Health: Hide blood values", {
 	removeMissionEventHandler ["Draw3D", ace_med_debug];
+	ace_med_debug=nil;
 }] call zen_custom_modules_fnc_register;
 
 ["A_Mission", "Reset stamina", {

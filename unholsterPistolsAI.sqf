@@ -1,5 +1,5 @@
 {
-	if (!isPlayer _x && {currentWeapon _x == handgunWeapon _x}) then {
-		_x action ['SwitchWeapon', _x, _x, 100];
+	if (!isPlayer _x && {primaryWeapon _x == ""}) then {
+		_x selectWeapon (handgunWeapon _x);
 	};
-} forEach allUnits;
+} forEach units west;

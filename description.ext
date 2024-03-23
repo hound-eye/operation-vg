@@ -249,10 +249,11 @@ class CfgRespawnInventory
 		uniformClass = "LOP_U_PMC_red_hi";
 		backpack = "B_CivilianBackpack_01_Everyday_Astra_F";
 		weapons[] = {"rhs_weap_savz61", "Throw", "Put"};
-		magazines[] = {"rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61"};
-		items[] = {"FirstAidKit", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_personalAidKit", "ACE_salineIV_500", "ACE_salineIV_500", "ACE_splint", "ACE_splint", "ACE_tourniquet", "ACE_tourniquet", "ACE_morphine", "ACE_morphine", "ACE_epinephrine", "ACE_epinephrine"};
-		linkedItems[] = {, "G_Shades_Blue", "ItemMap", "ItemCompass", "ItemWatch", "TFAR_anprc152"};
+		magazines[] = {"rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhsgref_20rnd_765x17_vz61", "rhs_mag_m67", "rhs_mag_m67", "rhsgref_20rnd_765x17_vz61"};
+		items[] = {"ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_fieldDressing", "ACE_epinephrine", "ACE_epinephrine", "ACE_epinephrine", "ACE_morphine", "ACE_morphine", "ACE_morphine", "ACE_personalAidKit", "ACE_splint", "ACE_splint", "ACE_splint", "ACE_tourniquet", "ACE_tourniquet", "V_TacVest_oli", "rhs_weap_savz61"};
+		linkedItems[] = {, "G_Shades_Blue", "ItemMap", "ItemCompass", "ItemWatch", "ItemRadio"};
 	};
+
 	class HNDM_TLA_UC_2
 	{
 		displayName = "Vz. 61 Skorpion";
@@ -274,6 +275,9 @@ class CfgFunctions
 	{
 		class Mission
 		{
+			class openLoadoutDialog {
+				file = functions\fn_openLoadoutDialog.sqf;
+			};
 			class enableDeployment {
 				file = functions\fn_enableDeployment.sqf;
 			};
@@ -465,5 +469,105 @@ class RscTitles
 				text = "You are no longer undercover!";
 			};  
 		};	
+	};
+};
+
+import RscListBox;
+import RscButtonMenu;
+import RscText;
+import RscFrame;
+import RscPicture;
+
+class DialogLoadoutMenu
+{
+	idd = 7986;
+	onLoad = "execVM ""openLoadoutDialog.sqf""";
+	class controls
+	{
+		#include "\a3\ui_f\hpp\definecommoncolors.inc"
+		#include "\a3\ui_f\hpp\definecommongrids.inc"
+		class RscListbox_1500: RscListBox
+		{
+			idc = 1500;
+			colorSelect[] = {0.98,0.65,0,1};
+			colorSelectBackground[] = {0.24,0.24,0.24,0.6};
+			colorScrollBar[] = {1,0,0,1};
+
+			text = "Loadout name"; //--- ToDo: Localize;
+			x = 0.355625 * safezoneW + safezoneX;
+			y = 0.269 * safezoneH + safezoneY;
+			w = 0.144375 * safezoneW;
+			h = 0.11 * safezoneH;
+			colorText[] = {0.85,0.47,0,1};
+			colorBackground[] = {0.12,0.12,0.12,1};
+		};
+		class RscText_1001: RscText
+		{
+			idc = 1001;
+
+			text = "Choose loadout preset"; //--- ToDo: Localize;
+			x = -56.18 * GUI_GRID_W + GUI_GRID_X;
+			y = 22.46 * GUI_GRID_H + GUI_GRID_Y;
+			w = 18 * GUI_GRID_W;
+			h = 2 * GUI_GRID_H;
+		};
+		class RscFrame_1800: RscFrame
+		{
+			idc = 1800;
+
+			x = 0.350469 * safezoneW + safezoneX;
+			y = 0.247 * safezoneH + safezoneY;
+			w = 0.299062 * safezoneW;
+			h = 0.319 * safezoneH;
+			colorBackground[] = {1,1,1,1};
+		};
+		class RscPicturePrimary: RscPicture
+		{
+			idc = 1200;
+
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.355625 * safezoneW + safezoneX;
+			y = 0.401 * safezoneH + safezoneY;
+			w = 0.0979687 * safezoneW;
+			h = 0.066 * safezoneH;
+		};
+		class RscPictureSecondary: RscPicture
+		{
+			idc = 1201;
+
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.546406 * safezoneW + safezoneX;
+			y = 0.401 * safezoneH + safezoneY;
+			w = 0.0979687 * safezoneW;
+			h = 0.066 * safezoneH;
+		};
+		class RscPictureLauncher: RscPicture
+		{
+			idc = 1202;
+
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.469062 * safezoneW + safezoneX;
+			y = 0.401 * safezoneH + safezoneY;
+			w = 0.061875 * safezoneW;
+			h = 0.066 * safezoneH;
+		};
+		class RscButtonMenu_2400: RscButtonMenu
+		{
+			idc = 2400;
+			text = "Apply loadout"; //--- ToDo: Localize;
+			x = 0.54125 * safezoneW + safezoneX;
+			y = 0.269 * safezoneH + safezoneY;
+			w = 0.103125 * safezoneW;
+			h = 0.099 * safezoneH;
+		};
+		class RscPicture_1203: RscPicture
+		{
+			idc = 1203;
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.355625 * safezoneW + safezoneX;
+			y = 0.489 * safezoneH + safezoneY;
+			w = 0.04125 * safezoneW;
+			h = 0.055 * safezoneH;
+		};
 	};
 };
