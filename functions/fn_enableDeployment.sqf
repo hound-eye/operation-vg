@@ -1,9 +1,9 @@
 /*
 	Author: Houndeye
 	Description:
-		Enable or disable deployment for reinforcements
+		Enable or disable deployment for reinforcements.
 	Parameter(s):
-		0: OBJECT - unit to disable undercover logic for
+		0: OBJECT - deployment point marker name
 		1: BOOLEAN - true to enable, false to disable
 	Returns:
 		BOOLEAN

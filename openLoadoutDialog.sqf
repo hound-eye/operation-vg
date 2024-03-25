@@ -6,40 +6,99 @@ _loadouts = missionNamespace getVariable ["ace_arsenal_defaultLoadoutsList", ""]
 disableSerialization;
 _gui_list = findDisplay DIALOG_LOADOUT_IDD displayCtrl DIALOG_LOADOUT_LIST_IDC;
 
+HNDM_nilToEmptyArrays=
+{
+	params["_inputContainer"];
+	private _outputContainer = [];
+	{
+		if (isNil "_x") then {
+			_outputContainer pushBack []; 
+		} else {
+			_outputContainer pushBack _x;
+		}
+	} forEach _inputContainer;
+	_outputContainer;
+};
+
+HNDM_setCtrlTooltip=
+{
+	params["_idc","_text"];
+	_control = findDisplay DIALOG_LOADOUT_IDD displayCtrl _idc;
+	_control ctrlSetTooltip _text;
+};
+
+HNDM_updateOtherItems = 
+{
+	params["_loadout"];
+	// get binos, helmet, nvg, glasses
+	// get map, gps, radio, compass, watch
+	private _output=[];
+	private _itemlist=_loadout select 9; 
+	_itemlist pushBack (_loadout select 6);
+	_itemlist pushBack (_loadout select 7);
+	_itemlist pushBack (_loadout select 8);
+	{
+		private _itemClass=_x;
+		if (typeName _x == "ARRAY") then {
+			_itemClass = _itemClass select 0;
+		};
+		if (isNil "_itemClass") then {
+			_itemClass = "";
+		};
+		_itemName = getText ([_itemClass] call CBA_fnc_getItemConfig >> "displayName");
+		if (_itemName != "") then { _output pushBack _itemName };
+	} forEach _itemlist;
+	
+	_text = findDisplay DIALOG_LOADOUT_IDD displayCtrl DIALOG_LOADOUT_OTHER_TEXT;
+	_separator = ",";
+	_text ctrlSetStructuredText (parseText (_output joinString _separator));
+};
+
 HNDM_updateUVBlist =
 {
 	params["_mode", "_containerArray"];
 	// 0 - uniform, 1 - vest, 2 - backpack
 	private _finalItems = [];
 
-	{
-		copyToClipboard str (_containerArray);
-		_classname = _x select 0;
+	// when no gear in the slot 
+	if (count _containerArray == 0) then {
+		_containerArray=[""];
+	};
 
-		if (typeName _classname == "ARRAY") then {
-			systemChat "found weapon?container?";
-		} else {
-			// systemChat str (_classname);
+	private ["_containerName","_containerItems"];
+	_containerName=_containerArray select 0;
+	_containerItems=_containerArray select 1;
+	{
+		if (typeName _x == "ARRAY" && {count _x != 0}) then {
+			private _classname = _x select 0;
+			if (typeName _classname == "ARRAY") then {
+				// item is a weapon, so we need to take its name
+				_classname = _classname select 0;
+			};
 			if ( isClass (configFile >> "CfgWeapons" >> _classname)) then {
-				systemChat ("found weapon" + _classname);
-				_var = _classname;
-				_finalItems pushBack _var;
+				_nextParam = _x select 1;
+				if (typeName _nextParam == "BOOL") then {
+					// item is backpack or vest
+					_var = getText (configFile >> "cfgWeapons" >> _classname >> "displayName");
+					_finalItems pushBack _var;
+				} else {
+					_count = _x select 1;
+					_var =  "(x" + str(_count) + ") " + getText (configFile >> "cfgWeapons" >> _classname >> "displayName");
+					_finalItems pushBack _var;
+				};
 			} else {
 				if ( isClass (configFile >> "CfgMagazines" >> _classname)) then {
 					_count = _x select 1;
-					//systemChat str (_count);
 					_var = "(x" + str(_count) + ") " + getText (configFile >> "cfgMagazines" >> _classname >> "displayName");
-					systemChat _var;
 					_finalItems pushBack _var;
 				} else {
-					systemChat str "found something ";
-					_var = _classname;
+					_var = "unknown item: " + _classname;
 					_finalItems pushBack _var;
-					systemChat str (_forEachIndex);
 				};
 			};
-		}
-	} forEach (_containerArray select 1);
+		} else {
+		};
+	} forEach ([_containerItems] call HNDM_nilToEmptyArrays);
 
 	private "_text";
 	switch (_mode) do
@@ -49,26 +108,69 @@ HNDM_updateUVBlist =
 		case 2: { _text = findDisplay DIALOG_LOADOUT_IDD displayCtrl DIALOG_LOADOUT_BACKPACK_TEXT; };
 		default { hint "sus" };
 	};
-	//_separator = toString[13] + toString[10];
 	_separator = "<br/>";
 	_text ctrlSetStructuredText (parseText (_finalItems joinString _separator));
 };
 
-
 HNDM_updateWeaponAttachmentsImages =
 {
-	params["_mode", "_weaponArray"];
-	private "_opticsPicture";
-	private "_opticsTooltip";
-
-	// handle secondary & launcher attachments
-	_optics = _weaponArray select 3;
-	if (isNil "_optics") then { _opticsPicture = ""; _opticsTooltip = "" } else { 
-		_opticsPicture = getText (configFile >> "cfgWeapons" >> _optics >> "picture");
-		_opticsTooltip = getText (configFile >> "cfgWeapons" >> _optics >> "displayName");
+	params["_mode", ["_weaponArray", ["", "", "", "", "", "", ""]]];
+	private _slotsToUpdate = [];
+	
+	switch (_mode) do
+	{
+		case 0: { 
+			_slotsToUpdate = [
+				DIALOG_LOADOUT_PRIMARY_MUZZLE_PICTURE,
+				DIALOG_LOADOUT_PRIMARY_LIGHT_PICTURE,
+				DIALOG_LOADOUT_PRIMARY_OPTICS_PICTURE,
+				DIALOG_LOADOUT_PRIMARY_MAG_PICTURE,
+				DIALOG_LOADOUT_PRIMARY_GL_PICTURE,
+				DIALOG_LOADOUT_PRIMARY_BIPOD_PICTURE
+			] };
+		case 1: { 
+			_slotsToUpdate = [
+				DIALOG_LOADOUT_SECONDARY_MUZZLE_PICTURE,
+				DIALOG_LOADOUT_SECONDARY_LIGHT_PICTURE,
+				DIALOG_LOADOUT_SECONDARY_OPTICS_PICTURE,
+				DIALOG_LOADOUT_SECONDARY_MAG_PICTURE,
+				1,
+				1
+			] };
+		case 2: { 
+			_slotsToUpdate = [
+				1,
+				1,
+				DIALOG_LOADOUT_LAUNCHER_OPTICS_PICTURE,
+				DIALOG_LOADOUT_LAUNCHER_MAG_PICTURE,
+				1,
+				1
+			] };
 	};
-	ctrlSetText [DIALOG_LOADOUT_PRIMARY_OPTICS_PICTURE, _opticsPicture];
-	//ctrlSetTooltip [DIALOG_LOADOUT_PRIMARY_OPTICS_PICTURE, _opticsTooltip];
+	{
+		_idc_for_slot=_x;
+		if (_idc_for_slot == 1) then { continue };
+		_attachment=_weaponArray select (_forEachIndex+1);
+		if (typeName _attachment == "ARRAY") then {
+			if (count _attachment == 0) then {
+				_attachment="";
+			} else {
+				_attachment =_attachment select 0;
+			}
+		};
+		private ["_attachmentPicture", "_attachmentTooltip"];
+
+		if (isNil "_attachment" || _attachment == "") then {
+			_attachmentPicture = "";
+			_attachmentTooltip = "" ;
+		} else {
+			_configPath = [_attachment] call CBA_fnc_getItemConfig;
+			_attachmentPicture = getText (_configPath >> "picture");
+			_attachmentTooltip = getText (_configPath >> "displayName");
+		};
+		ctrlSetText [_idc_for_slot, _attachmentPicture];
+		[_idc_for_slot, _attachmentTooltip] call HNDM_setCtrlTooltip;
+	} forEach _slotsToUpdate;
 };
 
 HNDM_updateWeaponData =
@@ -80,28 +182,50 @@ HNDM_updateWeaponData =
 	private ["_primaryWeaponTooltip", "_secondaryWeaponTooltip", "_launcherWeaponTooltip"];
 
 	_primary = _loadoutArray select 0 select 0;
-	if (isNil "_primary") then { _primaryWeaponPicture = ""; _primaryWeaponTooltip = "" } else { 
-			_primaryWeaponPicture = getText (configFile >> "cfgWeapons" >> _primary >> "picture");
-			_primaryWeaponTooltip = getText (configFile >> "cfgWeapons" >> _primary >> "displayName");
-			[0, _loadoutArray select 0] call HNDM_updateWeaponAttachmentsImages;
+	if (isNil "_primary") then { 
+		_primaryWeaponPicture = "";
+		_primaryWeaponTooltip = "";
+		[0] call HNDM_updateWeaponAttachmentsImages; 
+	} else { 
+		_primaryWeaponPicture = getText (configFile >> "cfgWeapons" >> _primary >> "picture");
+		_primaryWeaponTooltip = getText ([_primary] call CBA_fnc_getItemConfig >> "displayName");
+		[0, _loadoutArray select 0] call HNDM_updateWeaponAttachmentsImages;
 	};
 	ctrlSetText [DIALOG_LOADOUT_PRIMARY_PICTURE, _primaryWeaponPicture];
+	[DIALOG_LOADOUT_PRIMARY_PICTURE, _primaryWeaponTooltip] call HNDM_setCtrlTooltip;
 	//ctrlSetTooltip [DIALOG_LOADOUT_PRIMARY_PICTURE, _primaryWeaponTooltip];
-	_secondary = _loadoutArray select 1 select 0;
-	if (isNil "_secondary") then { _secondaryWeaponPicture = "" } else { 
-			_secondaryWeaponPicture = getText (configFile >> "cfgWeapons" >> _secondary >> "picture")
-			//[1] call handleAttachments;
-		};
+	_secondary = _loadoutArray select 2 select 0;
+	if (isNil "_secondary") then { 
+		_secondaryWeaponPicture = "";
+		_secondaryWeaponTooltip = "";
+		[1] call HNDM_updateWeaponAttachmentsImages;
+	} else {
+		_configPath = _secondary call CBA_fnc_getItemConfig;
+		_secondaryWeaponPicture = getText (_configPath >> "picture");
+		_secondaryWeaponTooltip = getText (_configPath >> "displayName");
+		[1, _loadoutArray select 2] call HNDM_updateWeaponAttachmentsImages;
+	};
 	ctrlSetText [DIALOG_LOADOUT_SECONDARY_PICTURE, _secondaryWeaponPicture];
-
-	_launcher = _loadoutArray select 2 select 0;
-	if (isNil "_launcher") then { _launcherWeaponPicture = "" } else { _launcherWeaponPicture = getText (configFile >> "cfgWeapons" >> _launcher >> "picture")};
+	[DIALOG_LOADOUT_SECONDARY_PICTURE, _secondaryWeaponTooltip] call HNDM_setCtrlTooltip;
+	_launcher = _loadoutArray select 1 select 0;
+	if (isNil "_launcher") then { 
+		_launcherWeaponPicture = "";
+		_launcherWeaponTooltip = "";
+		[2] call HNDM_updateWeaponAttachmentsImages;
+	} else { 
+		_configPath = _launcher call CBA_fnc_getItemConfig;
+		_launcherWeaponPicture = getText (_configPath >> "picture");
+		_launcherWeaponTooltip = getText (_configPath >> "displayName");
+		[2, _loadoutArray select 1] call HNDM_updateWeaponAttachmentsImages;
+	};
 	ctrlSetText [DIALOG_LOADOUT_LAUNCHER_PICTURE, _launcherWeaponPicture];
+	[DIALOG_LOADOUT_LAUNCHER_PICTURE, _launcherWeaponTooltip] call HNDM_setCtrlTooltip;
 
-	//Populate uniform/text/backpack
 	[0, _loadoutArray select 3] call HNDM_updateUVBlist;
 	[1, _loadoutArray select 4] call HNDM_updateUVBlist;
 	[2, _loadoutArray select 5] call HNDM_updateUVBlist;
+
+	[_loadoutArray] call HNDM_updateOtherItems;
 };
 
 // fill data
@@ -129,8 +253,6 @@ _button ctrlAddEventHandler ["ButtonClick", {
 	params["_control"];
 	_loadout = lbData [DIALOG_LOADOUT_LIST_IDC, lbCurSel DIALOG_LOADOUT_LIST_IDC];
 	_loadoutArray = parseSimpleArray _loadout select 0;
-	systemChat str (_loadoutArray);
-	copyToClipboard str (_loadoutArray);
 	player setUnitLoadout _loadoutArray;
 	closeDialog 1;
 }];
