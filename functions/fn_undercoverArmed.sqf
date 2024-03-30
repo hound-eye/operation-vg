@@ -19,7 +19,7 @@
 /* Stops spectator script */
 params["_ucUnit"];
 //systemChat "DEBUG UC OFF";
-cutRsc ["ArmedMessage","PLAIN"];
+("HNDM_UC_status" call BIS_fnc_rscLayer) cutRsc ["ArmedMessage","PLAIN"];
 //and this switches him back to his regular self:
 _ucUnit setCaptive false;
 true;

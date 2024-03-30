@@ -23,6 +23,7 @@ if (!(player getVariable ["HNDM_UC_enabled", false])) exitWith {
 };
 [{ 
   params["_unitsList", "_handlerId"];
+  systemChat str (_unitsList);
   if (isNil {player getVariable "HNDM_UC_restricted_area_time"}) then {
 	player setVariable ["HNDM_UC_restricted_area_time", diag_tickTime, false]; 
   };

@@ -2,23 +2,15 @@
 	Author: Houndeye
 	Description:
 	Parameter(s):
-		0: OBJECT - unit to disable undercover logic for
+		0: OBJECT - 
 	Returns:
 		BOOLEAN
 	Examples:
 		[unit] call HNDM_fnc_undercoverUnarmed
 */
-/* Private variables */
-
-
-// start countdown loop, showing warning and time before blowCover
-// exit from loop, if cover is already blown
-// trigger blowCover if countdown runs out 
-
-/* Stops spectator script */
 params["_ucUnit"];
 systemChat "DEBUG UC ON";
-cutRsc ["UnarmedMessage","PLAIN"];
+("HNDM_UC_status" call BIS_fnc_rscLayer) cutRsc ["UnarmedMessage","PLAIN"];
 //and this switches him back to his regular self:
 _ucUnit setCaptive true;
 true;

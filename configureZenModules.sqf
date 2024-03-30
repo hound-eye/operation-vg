@@ -1,22 +1,13 @@
-["A_Mission", "Add undercover mechanics", {[_this select 1] remoteExec ["HNDM_fnc_undercoverInit", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
-["A_Mission", "Remove undercover mechanics", {[_this select 1] remoteExec ["HNDM_fnc_undercoverRemove", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
-
-["A_Mission", "Holster pistols for all AI", {
-		{
-			if (!isPlayer _x && {currentWeapon _x == handgunWeapon _x}) then {
-				_x action ['SwitchWeapon', _x, _x, 100];
-			};
-		} forEach allUnits;
-	}] call zen_custom_modules_fnc_register;
+["A_Mission", "Undercover: Enable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverInit", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
+["A_Mission", "Undercover: Disable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverRemove", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
 
 ["A_Mission", "Unholster pistols for all AI", {
-		{
-			if (!isPlayer _x && {currentWeapon _x == handgunWeapon _x}) then {
-				_x action ['SwitchWeapon', _x, _x, 100];
-			};
-		} forEach allUnits;
-	}] call zen_custom_modules_fnc_register;
-
+	{
+		if (!isPlayer _x && {primaryWeapon _x == ""}) then {
+			_x selectWeapon (handgunWeapon _x);
+		};
+	} forEach units west;
+}] call zen_custom_modules_fnc_register;
 
 ["A_Mission", "Health: Display blood values", {
 	if (!isNil "ace_med_debug") exitWith { systemChat "health is already displayed" };
@@ -50,7 +41,7 @@
 	ace_med_debug=nil;
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Reset stamina", {
+["A_Mission", "Stamina: Reset stamina for unit", {
 	_entity=_this select 1;
 	if (isNull _entity ) exitWith {systemChat "no entity selected"};
 	_code={
@@ -64,13 +55,37 @@
 	systemChat format ["stamina reset for %1", _entity];
 }] call zen_custom_modules_fnc_register;
 
-// [{ 
-//   systemChat format ["1st Aerobic reserve:%1", ace_advanced_fatigue_ae1reserve]; 
-//   systemChat format ["2nd Aerobic reserve:%1", ace_advanced_fatigue_ae2reserve]; 
-//   systemChat format ["Anaerobic reserve:%1", ace_advanced_fatigue_anreserve]; 
-//   systemChat format ["Anaerobic fatigue:%1", ace_advanced_fatigue_anfatigue]; 
-//   systemChat format ["Aiming fatigue:%1", ace_advanced_fatigue_aimfatigue]; 
-//   systemChat format ["Muscle damage:%1", ace_advanced_fatigue_muscledamage]; 
-// }, 
-// 5, 
-// []] call CBA_fnc_addPerFrameHandler;
+["A_Mission", "Mission: Show objectives overlay", {
+	if (!isNil "ace_med_debug") exitWith { systemChat "health is already displayed" };
+	objective_overlay = addMissionEventHandler ["Draw3D", {
+		{
+		_unit = _x;
+			if (!(isNil "_unit") AND ((side _unit) == west OR (side _unit) == east OR (side _unit) == resistance OR (side _unit) == civilian))then {
+				if (!(isNil "test_backpack") && { test_backpack == unitBackpack _unit } ) then {
+					_pos = ASLToAGL getPosASL _unit;
+					_headPos = [_pos select 0, _pos select 1, (_pos select 2) + 1.2];
+					_Text = format ["Merman's hair transplantant"];
+					drawIcon3D ["", [1, 1, 1,1], _headPos, 0, 0, 0, _Text, 2, 0.03, "PuristaBold"];
+				};
+				if (!(isNil "money_backpack") && { money_backpack == unitBackpack _unit } ) then {
+					_pos = ASLToAGL getPosASL _unit;
+					_headPos = [_pos select 0, _pos select 1, (_pos select 2) + 1.2];
+					_Text = format ["Money"];
+					drawIcon3D ["", [1, 1, 1,1], _headPos, 0, 0, 0, _Text, 2, 0.03, "PuristaBold"];
+				};
+				if (!(isNil "intel_backpack") && { intel_backpack == unitBackpack _unit } ) then {
+					_pos = ASLToAGL getPosASL _unit;
+					_headPos = [_pos select 0, _pos select 1, (_pos select 2) + 1.2];
+					_Text = format ["Intel"];
+					drawIcon3D ["", [1, 1, 1,1], _headPos, 0, 0, 0, _Text, 2, 0.03, "PuristaBold"];
+				};
+			};
+		} forEach allUnits;
+	}];
+}] call zen_custom_modules_fnc_register;
+
+
+["A_Mission", "Mission: Hide objectives overlay", {
+	removeMissionEventHandler ["Draw3D", objective_overlay];
+	objective_overlay=nil;
+}] call zen_custom_modules_fnc_register;

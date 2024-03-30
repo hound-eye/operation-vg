@@ -22,16 +22,29 @@ if (_ucEnabled) exitWith {
 	false;
 };
 
-_ucUnit setVariable ["HNDM_UC_enabled", true, false];
+_ucUnit setVariable ["HNDM_UC_enabled", true, true];
 //give unit armed/unarmed status
 [_ucUnit] call HNDM_fnc_undercoverEvaluateArmed;
 //the next part is what happens if the player changes his weapon (on foot):
 
 //and here we add the cba-playerEventHandler: They trigger everytime something happens and will execute some code:
 //this one executes the code within {} (which is our undercover_scriptfnc_switch_onfoot from above) if the player changes his weapon:
-HNDM_UC_EVH_weapon = ["weapon", {[_this select 0, _this select 1] call HNDM_fnc_undercoverHandleWeaponChange}] call CBA_fnc_addPlayerEventHandler;
-HNDM_UC_EVH_loadout = ["loadout", {[_this select 0, _this select 1] call HNDM_fnc_undercoverHandleLoadoutChange}] call CBA_fnc_addPlayerEventHandler;
+private _layer_id = ["HNDM_UC_status"] call BIS_fnc_rscLayer;
+//_ucUnit setVariable ["HNDM_UC_status", _layer_id, true];
+
+_ucUnit setVariable [
+	"HNDM_UC_EVH_weapon",
+	["weapon", {[_this select 0, _this select 1] call HNDM_fnc_undercoverHandleWeaponChange}] call CBA_fnc_addPlayerEventHandler,
+	true];
+
+_ucUnit setVariable [
+	"HNDM_UC_EVH_loadout",
+	["loadout", {[_this select 0, _this select 1] call HNDM_fnc_undercoverHandleLoadoutChange}] call CBA_fnc_addPlayerEventHandler,
+	true];
 //this one executes the code within {} (which is our undercover_scriptfnc_switch_inVeh from above) if the player changes his vehicle:
-HNDM_UC_EVH_vehicle = ["vehicle", {[_this select 0, _this select 1] call HNDM_fnc_undercoverHandleVehicleChange}] call CBA_fnc_addPlayerEventHandler;
+_ucUnit setVariable [
+	"HNDM_UC_EVH_vehicle",
+	["vehicle", {[_this select 0, _this select 1] call HNDM_fnc_undercoverHandleVehicleChange}] call CBA_fnc_addPlayerEventHandler,
+	true];
 //and done.
 true;

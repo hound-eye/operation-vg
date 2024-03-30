@@ -1,10 +1,11 @@
-#include "commons.hpp"
+#include "..\commons.hpp"
 
-waitUntil { !isNull findDisplay DIALOG_LOADOUT_IDD };
+params["_display"];
 
 _loadouts = missionNamespace getVariable ["ace_arsenal_defaultLoadoutsList", ""];
+_loadouts = [_loadouts, [], {_x select 0}, "ASCEND"] call BIS_fnc_sortBy;
 disableSerialization;
-_gui_list = findDisplay DIALOG_LOADOUT_IDD displayCtrl DIALOG_LOADOUT_LIST_IDC;
+_gui_list = _display displayCtrl DIALOG_LOADOUT_LIST_IDC;
 
 HNDM_nilToEmptyArrays=
 {
@@ -109,6 +110,7 @@ HNDM_updateUVBlist =
 		default { hint "sus" };
 	};
 	_separator = "<br/>";
+	copyToClipboard str (parseText (_finalItems joinString _separator));
 	_text ctrlSetStructuredText (parseText (_finalItems joinString _separator));
 };
 
@@ -176,7 +178,8 @@ HNDM_updateWeaponAttachmentsImages =
 HNDM_updateWeaponData =
 {
 	params ["_loadout"];
-	_loadoutArray = parseSimpleArray _loadout select 0;
+	_loadoutArray = (parseSimpleArray _loadout) select 0;
+	systemChat format ["loadout_array, %1", _loadoutArray];
 
 	private ["_primaryWeaponPicture", "_secondaryWeaponPicture", "_launcherWeaponPicture"];
 	private ["_primaryWeaponTooltip", "_secondaryWeaponTooltip", "_launcherWeaponTooltip"];
@@ -232,14 +235,24 @@ HNDM_updateWeaponData =
 {
 	_loadoutName=_x select 0;
 	_loadoutData=_x select 1;
-	_index = lbAdd [DIALOG_LOADOUT_LIST_IDC, _loadoutName];
-	lbSetData [DIALOG_LOADOUT_LIST_IDC, _index, str (_loadoutData)];
+	// for multiplayer, filter the kit by the role prefix
+	if (isMultiplayer) then {
+		if ([roleDescription player, _loadoutName] call BIS_fnc_inString ) then {
+			_index = lbAdd [DIALOG_LOADOUT_LIST_IDC, _loadoutName];
+			lbSetData [DIALOG_LOADOUT_LIST_IDC, _index, str (_loadoutData)];
+		};
+	} else {
+		_index = lbAdd [DIALOG_LOADOUT_LIST_IDC, _loadoutName];
+		lbSetData [DIALOG_LOADOUT_LIST_IDC, _index, str (_loadoutData)];
+	};
 } forEach _loadouts;
 
 // select first loadout
-_gui_list lbSetCurSel 0;
+lbSetCurSel [DIALOG_LOADOUT_LIST_IDC,0];
 _loadout = lbData [DIALOG_LOADOUT_LIST_IDC, 0];
-[_loadout] call HNDM_updateWeaponData;
+if (!isNil _loadout) then {
+	[_loadout] call HNDM_updateWeaponData;
+};
 
 _gui_list ctrlAddEventHandler ["LBSelChanged", {
 	params ["_control", "_lbCurSel"];

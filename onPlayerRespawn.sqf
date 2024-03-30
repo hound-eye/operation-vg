@@ -4,3 +4,4 @@
 // if (!isNil "uc_2" && { player == uc_2 } ) then {
 // 	[] execVM "initUndercover.sqf";
 // };
+createDialog "DialogLoadoutMenu";
