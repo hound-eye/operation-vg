@@ -18,17 +18,34 @@
 // trigger blowCover if countdown runs out 
 
 /* Stops spectator script */
-params["_deployment","_enabled"];
-_enabled=true;
+params["_deploymentObject","_enabled"];
+_attachedMarker = _deploymentObject getVariable "HNDM_attachedMarker";
+systemChat str (_attachedMarker);
+private "_notification";
 if (_enabled) then {
-	_title="New available deployment point";
-	_icon="\A3\ui_f\data\map\markers\military\start_CA.paa";
+	systemChat "Enabling deployment";
+	//_title="New available deployment point";
+	//_icon="\A3\ui_f\data\map\markers\military\start_CA.paa";
+	_attachedMarker setMarkerAlpha 1;
+
+	_spawns = missionNamespace getVariable ["hndm_spawns", []];
+	_spawns pushBack _deploymentObject;
+	missionNamespace setVariable ["hndm_spawns", _spawns, true];
+	_notification = "EnabledDeployment";
+
 } else {
-	_title="Deployment point unavailable";
-	_icon="\A3\ui_f\data\map\markers\military\objective_CA.paa";
+	systemChat "Disabling deployment";
+	//_title="Deployment point unavailable";
+	//_icon="\A3\ui_f\data\map\markers\military\objective_CA.paa";
+	_attachedMarker setMarkerAlpha 0;
+
+	_spawns = missionNamespace getVariable ["hndm_spawns", []];
+	_spawns = _spawns - [_deploymentObject];
+	missionNamespace setVariable ["hndm_spawns", _spawns, true];
+	_notification = "DisabledDeployment";
 };
 _priority = 0;
-_description = "example";
+_description = markerText _attachedMarker;
 
-["Default", [_title, _icon, "", _description, _color, 5, 0]] call BIS_fnc_showNotification;
+[_notification, [_description]] remoteExec ["BIS_fnc_showNotification",0];
 _enabled;

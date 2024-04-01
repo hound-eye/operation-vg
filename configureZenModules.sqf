@@ -84,8 +84,17 @@
 	}];
 }] call zen_custom_modules_fnc_register;
 
-
 ["A_Mission", "Mission: Hide objectives overlay", {
 	removeMissionEventHandler ["Draw3D", objective_overlay];
 	objective_overlay=nil;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission", "Deploy: Enable Deployment", {
+	_board = _this select 1;
+	[_board, true] call HNDM_fnc_enableDeployment;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission", "Deploy: Disable Deployment", {
+	_board = _this select 1;
+	[_board, false] call HNDM_fnc_enableDeployment;
 }] call zen_custom_modules_fnc_register;

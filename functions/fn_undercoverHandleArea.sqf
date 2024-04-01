@@ -18,6 +18,12 @@
 
 /* Stops spectator script */
 params["_unitsList"];
+
+HNDM_evaluateUnit = 
+{
+
+};
+
 if (!(player getVariable ["HNDM_UC_enabled", false])) exitWith {
 	//systemChat "unit is not undercover!";
 };
@@ -27,7 +33,7 @@ if (!(player getVariable ["HNDM_UC_enabled", false])) exitWith {
   if (isNil {player getVariable "HNDM_UC_restricted_area_time"}) then {
 	player setVariable ["HNDM_UC_restricted_area_time", diag_tickTime, false]; 
   };
-  if (player in _unitsList) then {
+  if (vehicle player in _unitsList) then {
 	// calculate time spent in the trigger
 	_new_time = round (diag_tickTime - (player getVariable ["HNDM_UC_restricted_area_time", 0])); 
 	// systemChat format ["You are in restricted area for %1 seconds",_new_time];

@@ -3,21 +3,19 @@
 params["_display"];
 
 _deployments = missionNamespace getVariable ["hndm_spawns", []];
-_deployments = [_deployments, [], {_x select 0}, "ASCEND"] call BIS_fnc_sortBy;
+_deployments = [_deployments, [], {markerText (_x getVariable "hndm_attachedMarker")}, "ASCEND"] call BIS_fnc_sortBy;
 disableSerialization;
 
 _gui_list = _display displayCtrl DIALOG_DEPLOY_LIST_IDC;
 
 {
-	_marker_name=_x select 0;
-	_deployment_name = markerText _marker_name;
-	_deployment_position = getMarkerPos _marker_name;
+	_deployment_name = markerText (_x getVariable "hndm_attachedMarker");
+	_deployment_position = getPosATL _x;
 	_index = lbAdd [DIALOG_DEPLOY_LIST_IDC, _deployment_name];
 	lbSetData [DIALOG_DEPLOY_LIST_IDC, _index, str (_deployment_position)];
 } forEach _deployments;
 
-lbSetCurSel [DIALOG_DEPLOY_LIST_IDC,0];
-
+ctrlEnable [DIALOG_DEPLOY_BUTTON_DEPLOY, false];
 
 HNDM_handleSelect = 
 {
