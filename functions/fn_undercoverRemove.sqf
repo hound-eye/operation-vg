@@ -18,9 +18,6 @@
 
 /* Stops spectator script */
 params["_ucUnit"];
-//check if unit is already undercover
-//_ucUnit getVariable ["HNDM_UC_enabled",false];
-//systemChat "DEBUG UC Removed";
 _ucUnit setCaptive false;
 ("HNDM_UC_status" call BIS_fnc_rscLayer) cutRsc ["UndercoverRemoveMessage","PLAIN"];
 ["weapon", _ucUnit getVariable "HNDM_UC_EVH_weapon"] call CBA_fnc_removePlayerEventHandler;

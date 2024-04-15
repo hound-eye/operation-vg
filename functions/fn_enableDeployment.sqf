@@ -20,10 +20,8 @@
 /* Stops spectator script */
 params["_deploymentObject","_enabled"];
 _attachedMarker = _deploymentObject getVariable "HNDM_attachedMarker";
-systemChat str (_attachedMarker);
 private "_notification";
 if (_enabled) then {
-	systemChat "Enabling deployment";
 	//_title="New available deployment point";
 	//_icon="\A3\ui_f\data\map\markers\military\start_CA.paa";
 	_attachedMarker setMarkerAlpha 1;
@@ -34,7 +32,6 @@ if (_enabled) then {
 	_notification = "EnabledDeployment";
 
 } else {
-	systemChat "Disabling deployment";
 	//_title="Deployment point unavailable";
 	//_icon="\A3\ui_f\data\map\markers\military\objective_CA.paa";
 	_attachedMarker setMarkerAlpha 0;

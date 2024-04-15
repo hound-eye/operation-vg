@@ -14,7 +14,6 @@ params [
 	["_unit", player, [objNull]]
 	,["_veh", vehicle player, [objNull]]
 ];
-systemChat "DEBUG switched vehicle";
 //if the vehicle has no weapons, nothing will change:
 if ( (_veh currentWeaponTurret [0]) isEqualTo "" ) exitWith {};
 //but if it did, this will happen:

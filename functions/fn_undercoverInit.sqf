@@ -10,7 +10,6 @@
 		[unit] call HNDM_fnc_undercoverInit
 */
 /* Private variables */
-systemChat "undercover init";
 params["_ucUnit"];
 
 //check if unit is already undercover

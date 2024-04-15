@@ -10,7 +10,6 @@
 */
 /* Private variables */
 params["_ucUnit"];
-//systemChat "DEBUG SUSPECT ON";
 ("HNDM_UC_status" call BIS_fnc_rscLayer) cutRsc ["SuspectMessage","PLAIN"];
 //and this switches him back to his regular self:
 true;

@@ -9,10 +9,12 @@ disableSerialization;
 _gui_list = _display displayCtrl DIALOG_DEPLOY_LIST_IDC;
 
 {
-	_deployment_name = markerText (_x getVariable "hndm_attachedMarker");
-	_deployment_position = getPosATL _x;
-	_index = lbAdd [DIALOG_DEPLOY_LIST_IDC, _deployment_name];
-	lbSetData [DIALOG_DEPLOY_LIST_IDC, _index, str (_deployment_position)];
+	if (player distance _x > 800)  then {
+		_deployment_position = getPosATL _x;
+		_deployment_name = markerText (_x getVariable "hndm_attachedMarker");
+		_index = lbAdd [DIALOG_DEPLOY_LIST_IDC, _deployment_name];
+		lbSetData [DIALOG_DEPLOY_LIST_IDC, _index, str (_deployment_position)];
+	};
 } forEach _deployments;
 
 ctrlEnable [DIALOG_DEPLOY_BUTTON_DEPLOY, false];
@@ -21,8 +23,6 @@ HNDM_handleSelect =
 {
 	params["_curSel"];
 	_name = lbText [DIALOG_DEPLOY_LIST_IDC, _curSel];
-	systemChat format ["cur sel: %3, name: %1, var: %2", _name, player getVariable ["HNDM_UC_enabled", false], _curSel];
-
 	_control = _display displayCtrl DIALOG_DEPLOY_BUTTON_DEPLOY;
 
 	if (
@@ -49,8 +49,6 @@ _button = _display displayCtrl DIALOG_DEPLOY_BUTTON_DEPLOY;
 _button ctrlAddEventHandler ["ButtonClick", {
 	params["_control"];
 	_deployment = lbData [DIALOG_DEPLOY_LIST_IDC, lbCurSel DIALOG_DEPLOY_LIST_IDC];
-	copyToClipboard str (_deployment);
-	systemChat str (_deployment);
 	[_deployment] call HNDM_fnc_deployTravelToDeployment;
 	closeDialog 1;
 }];

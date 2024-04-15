@@ -14,7 +14,6 @@ params [
 	["_unit", player, [objNull]],
 	["_loadout", getUnitLoadout player, []]
 ];
-systemChat "DEBUG changed loadout";
 // flag determines if unit should go uc
 private _armed = false;
 if (count (getUnitLoadout _unit select 0) != 0) then { _armed = true };

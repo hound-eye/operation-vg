@@ -110,7 +110,6 @@ HNDM_updateUVBlist =
 		default { hint "sus" };
 	};
 	_separator = "<br/>";
-	copyToClipboard str (parseText (_finalItems joinString _separator));
 	_text ctrlSetStructuredText (parseText (_finalItems joinString _separator));
 };
 
@@ -179,7 +178,6 @@ HNDM_updateWeaponData =
 {
 	params ["_loadout"];
 	_loadoutArray = (parseSimpleArray _loadout) select 0;
-	systemChat format ["loadout_array, %1", _loadoutArray];
 
 	private ["_primaryWeaponPicture", "_secondaryWeaponPicture", "_launcherWeaponPicture"];
 	private ["_primaryWeaponTooltip", "_secondaryWeaponTooltip", "_launcherWeaponTooltip"];

@@ -1,15 +1,16 @@
-["A_Mission", "Undercover: Enable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverInit", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
-["A_Mission", "Undercover: Disable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverRemove", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
-
-["A_Mission", "Unholster pistols for all AI", {
+["A_Mission_Undercover", "Undercover: Enable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverInit", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
+["A_Mission_Undercover", "Undercover: Disable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverRemove", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
+["A_Mission_Undercover", "Undercover: DISABLE FOR ALL PLAYERS", {
 	{
-		if (!isPlayer _x && {primaryWeapon _x == ""}) then {
-			_x selectWeapon (handgunWeapon _x);
-		};
-	} forEach units west;
-}] call zen_custom_modules_fnc_register;
+		_uc_status = _x getVariable ["HNDM_UC_enabled",false];
+		if (_uc_status ) then {
+			[_x] remoteExec ["HNDM_fnc_undercoverRemove", owner (_x)];
+			systemChat format ["removed UC status for %1", _x];
+		}
+	} forEach allPlayers;
+	}] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Health: Display blood values", {
+["A_Mission_Overlays", "Health: Display blood values", {
 	if (!isNil "ace_med_debug") exitWith { systemChat "health is already displayed" };
 	ace_med_debug = addMissionEventHandler ["Draw3D", {
 		{
@@ -36,12 +37,12 @@
 	}];
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Health: Hide blood values", {
+["A_Mission_Overlays", "Health: Hide blood values", {
 	removeMissionEventHandler ["Draw3D", ace_med_debug];
 	ace_med_debug=nil;
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Stamina: Reset stamina for unit", {
+["A_Mission_Misc", "Stamina: Reset stamina for unit", {
 	_entity=_this select 1;
 	if (isNull _entity ) exitWith {systemChat "no entity selected"};
 	_code={
@@ -55,46 +56,71 @@
 	systemChat format ["stamina reset for %1", _entity];
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Mission: Show objectives overlay", {
-	if (!isNil "ace_med_debug") exitWith { systemChat "health is already displayed" };
+["A_Mission_Overlays", "Mission: Show objectives overlay", {
+	if (!isNil "objective_overlay") exitWith { systemChat "health is already displayed" };
 	objective_overlay = addMissionEventHandler ["Draw3D", {
 		{
-		_unit = _x;
-			if (!(isNil "_unit") AND ((side _unit) == west OR (side _unit) == east OR (side _unit) == resistance OR (side _unit) == civilian))then {
-				if (!(isNil "test_backpack") && { test_backpack == unitBackpack _unit } ) then {
-					_pos = ASLToAGL getPosASL _unit;
-					_headPos = [_pos select 0, _pos select 1, (_pos select 2) + 1.2];
-					_Text = format ["Merman's hair transplantant"];
-					drawIcon3D ["", [1, 1, 1,1], _headPos, 0, 0, 0, _Text, 2, 0.03, "PuristaBold"];
-				};
-				if (!(isNil "money_backpack") && { money_backpack == unitBackpack _unit } ) then {
-					_pos = ASLToAGL getPosASL _unit;
-					_headPos = [_pos select 0, _pos select 1, (_pos select 2) + 1.2];
-					_Text = format ["Money"];
-					drawIcon3D ["", [1, 1, 1,1], _headPos, 0, 0, 0, _Text, 2, 0.03, "PuristaBold"];
-				};
-				if (!(isNil "intel_backpack") && { intel_backpack == unitBackpack _unit } ) then {
-					_pos = ASLToAGL getPosASL _unit;
-					_headPos = [_pos select 0, _pos select 1, (_pos select 2) + 1.2];
-					_Text = format ["Intel"];
-					drawIcon3D ["", [1, 1, 1,1], _headPos, 0, 0, 0, _Text, 2, 0.03, "PuristaBold"];
-				};
-			};
-		} forEach allUnits;
+			if (!isNil { _x select 0}) then {
+				_pos = ASLToAGL getPosASL (objectParent (_x select 0)); 
+				_headPos = [_pos select 0, _pos select 1, (_pos select 2) + 1.2];
+				_Text = format ["Merman's hair transplantant"];
+				drawIcon3D ["", [1, 1, 1,1], _headPos, 0, 0, 0, (_x select 1), 2, 0.03, "PuristaBold"];
+			}
+		} forEach [[test_backpack, "Merman's Hair Transplant"], [money_backpack, "Money"], [intel_backpack, "Intel"]];
 	}];
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Mission: Hide objectives overlay", {
+["A_Mission_Overlays", "Mission: Hide objectives overlay", {
 	removeMissionEventHandler ["Draw3D", objective_overlay];
 	objective_overlay=nil;
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Deploy: Enable Deployment", {
+["A_Mission_Deploy", "Deploy: Enable Deployment", {
 	_board = _this select 1;
 	[_board, true] call HNDM_fnc_enableDeployment;
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission", "Deploy: Disable Deployment", {
+["A_Mission_Deploy", "Deploy: Disable Deployment", {
 	_board = _this select 1;
 	[_board, false] call HNDM_fnc_enableDeployment;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_AI", "AI: Unholster pistols for all AI", {
+	_modulePos = _this select 0;
+	_units = _modulePos nearEntities ["Man", 200];
+	{
+		if (!isPlayer _x && {primaryWeapon _x == ""}) then {
+			_x selectWeapon (handgunWeapon _x);
+		};
+		_x enableAI "MOVE";
+	} forEach _units;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks", "CREATE Eliminate all intelligence officers", {
+	// create task
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks", "FAIL Eliminate all intelligence officers", {
+	// create task
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks", "SUCCEED Eliminate all intelligence officers", {
+	// create task
+}] call zen_custom_modules_fnc_register;
+
+
+["A_Mission_Tasks", "CREATE Wait for friendly reinforcements from sea", {
+	// create task
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks", "FAIL Wait for friendly reinforcements from sea", {
+	// create task
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks", "SUCCEED Wait for friendly reinforcements from sea", {
+	// create task
+}] call zen_custom_modules_fnc_register;
+
+
+["A_Mission_Tasks", "(optional) Await extraction at the docks", {
 }] call zen_custom_modules_fnc_register;

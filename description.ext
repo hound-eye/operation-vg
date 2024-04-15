@@ -1,6 +1,6 @@
 author			= "Houndeye";
-onLoadName		= "Operation Limp Bisquit";
-onLoadMission	= "Capture precious cargo from Tanoa officials.";
+onLoadName		= "Operation Verdant Glow";
+onLoadMission	= "sus amogus";
 loadScreen		= "images\logo.jpg";
 
 class Header
