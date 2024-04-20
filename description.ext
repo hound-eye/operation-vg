@@ -1,6 +1,6 @@
 author			= "Houndeye";
 onLoadName		= "Operation Verdant Glow";
-onLoadMission	= "sus amogus";
+onLoadMission	= "Disrupt government forces COIN operation on the island of Moddergat";
 loadScreen		= "images\logo.jpg";
 
 class Header

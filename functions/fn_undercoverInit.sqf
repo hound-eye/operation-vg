@@ -12,6 +12,10 @@
 /* Private variables */
 params["_ucUnit"];
 
+if (isNil "_ucUnit") exitWith {
+	false;
+};
+
 //check if unit is already undercover
 //HNDM_UC_enabled = missionNamespace getVariable ["HNDM_UC_enabled",false];
 _ucEnabled = _ucUnit getVariable ["HNDM_UC_enabled", false];

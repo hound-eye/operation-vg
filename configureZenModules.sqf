@@ -1,15 +1,35 @@
-["A_Mission_Undercover", "Undercover: Enable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverInit", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
-["A_Mission_Undercover", "Undercover: Disable unit", {[_this select 1] remoteExec ["HNDM_fnc_undercoverRemove", owner (_this select 1)]}] call zen_custom_modules_fnc_register;
+["A_Mission_Undercover", "Undercover: Enable unit", {
+	_player = _this select 1;
+	if (!isNull _player) then {
+		_player remoteExecCall ["HNDM_fnc_undercoverInit", _player];
+		systemChat format ["activated UC status for %1", _player];
+	} else {
+		systemChat "Must select a valid player!";
+	};
+	
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Undercover", "Undercover: Disable unit", {
+	_player = _this select 1;
+	if (!isNull _player) then {
+		_player remoteExecCall ["HNDM_fnc_undercoverRemove", _player];
+		systemChat format ["removed UC status for %1", _player];
+	} else {
+		systemChat "Must select a valid player!";
+	};
+
+}] call zen_custom_modules_fnc_register;
 ["A_Mission_Undercover", "Undercover: DISABLE FOR ALL PLAYERS", {
 	{
 		_uc_status = _x getVariable ["HNDM_UC_enabled",false];
 		if (_uc_status ) then {
-			[_x] remoteExec ["HNDM_fnc_undercoverRemove", owner (_x)];
+			[_x] remoteExec ["HNDM_fnc_undercoverRemove", _x];
 			systemChat format ["removed UC status for %1", _x];
 		}
 	} forEach allPlayers;
 	}] call zen_custom_modules_fnc_register;
 
+// mission overlay
 ["A_Mission_Overlays", "Health: Display blood values", {
 	if (!isNil "ace_med_debug") exitWith { systemChat "health is already displayed" };
 	ace_med_debug = addMissionEventHandler ["Draw3D", {
@@ -96,31 +116,72 @@
 	} forEach _units;
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission_Tasks", "CREATE Eliminate all intelligence officers", {
+["A_Mission_Tasks_Bonus_Intel", "CREATE Eliminate all intelligence officers", {
+	_taskBrief = "<img image='images\bonus_intel.paa' width='367' height='256'/><br/>Locate and eliminate intelligence officer, who are in charge of this COIN operation, before they could make their escape.";
+	[east, "tsk_bonus_intel", [_taskBrief, "Eliminate all intelligence officers"], objNull, "CREATED", -1, true] call BIS_fnc_taskCreate;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks_Bonus_Intel", "FAIL Eliminate all intelligence officers", {
+	["tsk_bonus_intel", "FAILED", true] call BIS_fnc_taskSetState;
 	// create task
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission_Tasks", "FAIL Eliminate all intelligence officers", {
-	// create task
-}] call zen_custom_modules_fnc_register;
-
-["A_Mission_Tasks", "SUCCEED Eliminate all intelligence officers", {
-	// create task
+["A_Mission_Tasks_Bonus_Intel", "SUCCEED Eliminate all intelligence officers", {
+	["tsk_bonus_intel", "SUCCEEDED", true] call BIS_fnc_taskSetState;
 }] call zen_custom_modules_fnc_register;
 
 
-["A_Mission_Tasks", "CREATE Wait for friendly reinforcements from sea", {
+["A_Mission_Tasks_Bonus_Money", "CREATE Defend the contact", {
+	_taskBrief = "<img image='images\bonus_money.paa' width='367' height='256'/><br/>You have been ambushed! Fend off the attack and prevent your goods from falling into the enemy's hands.";
+	[east, "tsk_bonus_money", [_taskBrief, "Defend the contact"], objNull, "CREATED", -1, true] call BIS_fnc_taskCreate;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks_Bonus_Money", "FAIL Defend the contact", {
+	["tsk_bonus_money", "FAILED", true] call BIS_fnc_taskSetState;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks_Bonus_Money", "SUCCEED Defend the contact", {
+	["tsk_bonus_money", "SUCCEEDED", true] call BIS_fnc_taskSetState;
+}] call zen_custom_modules_fnc_register;
+
+
+["A_Mission_Tasks_Bonus_Extract", "CREATE Hold the docks until extraction arrives", {
+	_taskBrief = "<img image='images\bonus_extract.paa' width='367' height='256'/><br/>Our reinforcements are en-route to give you transport off the island. Hold on!";
+	[east, "bonus_extract", [_taskBrief, "Hold the docks until extraction arrives"], objNull, "CREATED", -1, true] call BIS_fnc_taskCreate;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks_Bonus_Extract", "FAIL Hold the docks until extraction arrives", {
+	["tsk_bonus_extract", "FAILED", true] call BIS_fnc_taskSetState;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks_Bonus_Extract", "SUCCEED Hold the docks until extraction arrives", {
+	["tsk_bonus_extract", "SUCCEEDED", true] call BIS_fnc_taskSetState;
+}] call zen_custom_modules_fnc_register;
+
+
+["A_Mission_Tasks_MAIN", "FAIL Intel", {
+	["TSK_INTEL", "FAILED", true] call BIS_fnc_taskSetState;
 	// create task
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission_Tasks", "FAIL Wait for friendly reinforcements from sea", {
+["A_Mission_Tasks_MAIN", "SUCCEED Intel", {
+	["TSK_INTEL", "SUCCEEDED", true] call BIS_fnc_taskSetState;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks_MAIN", "FAIL Money", {
+	["TSK_MONEY", "FAILED", true] call BIS_fnc_taskSetState;
 	// create task
 }] call zen_custom_modules_fnc_register;
 
-["A_Mission_Tasks", "SUCCEED Wait for friendly reinforcements from sea", {
+["A_Mission_Tasks_MAIN", "SUCCEED Money", {
+	["TSK_MONEY", "SUCCEEDED", true] call BIS_fnc_taskSetState;
+}] call zen_custom_modules_fnc_register;
+
+["A_Mission_Tasks_MAIN", "FAIL Extract", {
+	["TSK_EXTRACT", "FAILED", true] call BIS_fnc_taskSetState;
 	// create task
 }] call zen_custom_modules_fnc_register;
 
-
-["A_Mission_Tasks", "(optional) Await extraction at the docks", {
+["A_Mission_Tasks_MAIN", "SUCCEED Extract", {
+	["TSK_EXTRACT", "SUCCEEDED", true] call BIS_fnc_taskSetState;
 }] call zen_custom_modules_fnc_register;

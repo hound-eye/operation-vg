@@ -14,7 +14,6 @@ params [
 	["_unit", player, [objNull]]
 	,["_weapon", currentWeapon player, [""]]
 ];
-//systemChat "DEBUG switched weapon";
 if (primaryWeapon _unit != "") exitWith {
 	[_unit] call HNDM_fnc_undercoverArmed;
 };

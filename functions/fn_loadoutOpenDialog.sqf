@@ -107,7 +107,6 @@ HNDM_updateUVBlist =
 		case 0: { _text = findDisplay DIALOG_LOADOUT_IDD displayCtrl DIALOG_LOADOUT_UNIFORM_TEXT; };
 		case 1: { _text = findDisplay DIALOG_LOADOUT_IDD displayCtrl DIALOG_LOADOUT_VEST_TEXT; };
 		case 2: { _text = findDisplay DIALOG_LOADOUT_IDD displayCtrl DIALOG_LOADOUT_BACKPACK_TEXT; };
-		default { hint "sus" };
 	};
 	_separator = "<br/>";
 	_text ctrlSetStructuredText (parseText (_finalItems joinString _separator));
@@ -235,7 +234,8 @@ HNDM_updateWeaponData =
 	_loadoutData=_x select 1;
 	// for multiplayer, filter the kit by the role prefix
 	if (isMultiplayer) then {
-		if ([roleDescription player, _loadoutName] call BIS_fnc_inString ) then {
+		if (([roleDescription player, _loadoutName] call BIS_fnc_inString ) ||
+		((roleDescription player == "Infiltrator") && (["Guerrilla", _loadoutName] call BIS_fnc_inString ))) then {
 			_index = lbAdd [DIALOG_LOADOUT_LIST_IDC, _loadoutName];
 			lbSetData [DIALOG_LOADOUT_LIST_IDC, _index, str (_loadoutData)];
 		};
