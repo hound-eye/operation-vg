@@ -118,7 +118,7 @@
 
 ["A_Mission_Tasks_Bonus_Intel", "CREATE Eliminate all intelligence officers", {
 	_taskBrief = "<img image='images\bonus_intel.paa' width='367' height='256'/><br/>Locate and eliminate intelligence officer, who are in charge of this COIN operation, before they could make their escape.";
-	[east, "tsk_bonus_intel", [_taskBrief, "Eliminate all intelligence officers"], objNull, "CREATED", -1, true] call BIS_fnc_taskCreate;
+	[east, "tsk_bonus_intel", [_taskBrief, "Eliminate all intelligence officers"], objNull, "CREATED", -1, true, "kill"] call BIS_fnc_taskCreate;
 }] call zen_custom_modules_fnc_register;
 
 ["A_Mission_Tasks_Bonus_Intel", "FAIL Eliminate all intelligence officers", {
@@ -133,7 +133,7 @@
 
 ["A_Mission_Tasks_Bonus_Money", "CREATE Defend the contact", {
 	_taskBrief = "<img image='images\bonus_money.paa' width='367' height='256'/><br/>You have been ambushed! Fend off the attack and prevent your goods from falling into the enemy's hands.";
-	[east, "tsk_bonus_money", [_taskBrief, "Defend the contact"], objNull, "CREATED", -1, true] call BIS_fnc_taskCreate;
+	[east, "tsk_bonus_money", [_taskBrief, "Defend the contact"], objNull, "CREATED", -1, true, "defend"] call BIS_fnc_taskCreate;
 }] call zen_custom_modules_fnc_register;
 
 ["A_Mission_Tasks_Bonus_Money", "FAIL Defend the contact", {
@@ -147,7 +147,7 @@
 
 ["A_Mission_Tasks_Bonus_Extract", "CREATE Hold the docks until extraction arrives", {
 	_taskBrief = "<img image='images\bonus_extract.paa' width='367' height='256'/><br/>Our reinforcements are en-route to give you transport off the island. Hold on!";
-	[east, "bonus_extract", [_taskBrief, "Hold the docks until extraction arrives"], objNull, "CREATED", -1, true] call BIS_fnc_taskCreate;
+	[east, "bonus_extract", [_taskBrief, "Hold the docks until extraction arrives"], objNull, "CREATED", -1, true, "defend"] call BIS_fnc_taskCreate;
 }] call zen_custom_modules_fnc_register;
 
 ["A_Mission_Tasks_Bonus_Extract", "FAIL Hold the docks until extraction arrives", {
